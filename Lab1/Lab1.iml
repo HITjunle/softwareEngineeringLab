@@ -33,27 +33,18 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-core-2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-ui-swing-2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../gs-ui-swing-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-ui-swing-2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../gs-ui-swing-2.0.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-algo-2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../gs-core-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
