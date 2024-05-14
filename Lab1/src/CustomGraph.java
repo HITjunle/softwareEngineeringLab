@@ -1,5 +1,6 @@
-import org.graphstream.graph.*;
-import org.graphstream.graph.implementations.*;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,10 +10,11 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Graph {
+public class CustomGraph {
+
     private Map<String, Map<String, Integer>> adjacencyMap;
 
-    public Graph() {
+    public CustomGraph() {
         this.adjacencyMap = new HashMap<>();
     }
 
@@ -35,38 +37,38 @@ public class Graph {
         }
     }
 
-//    public void displayGraph() {
-//        org.graphstream.graph.Graph graph = new SingleGraph("Text Graph");
-//
-//        // Add nodes and edges
-//        for (String vertex : adjacencyMap.keySet()) {
-//            if (graph.getNode(vertex) == null) {
-//                graph.addNode(vertex).addAttribute("ui.label", vertex);
-//            }
-//            for (Map.Entry<String, Integer> entry : adjacencyMap.get(vertex).entrySet()) {
-//                String neighbor = entry.getKey();
-//                int weight = entry.getValue();
-//                if (graph.getNode(neighbor) == null) {
-//                    graph.addNode(neighbor).addAttribute("ui.label", neighbor);
-//                }
-//                String edgeId = vertex + "->" + neighbor;
-//                if (graph.getEdge(edgeId) == null) {
-//                    Edge edge = graph.addEdge(edgeId, vertex, neighbor, true);
-//                    edge.addAttribute("weight", weight);
-//                    edge.addAttribute("ui.label", weight);
-//                }
-//            }
-//        }
-//
-//        // Style the graph
-//        graph.addAttribute("ui.stylesheet", "node { text-size: 20px; } edge { text-size: 20px; }");
-//        graph.addAttribute("ui.quality");
-//        graph.addAttribute("ui.antialias");
-//
-//        // Display the graph
-//        graph.display();
-//    }
+    public void displayGraph() {
+        System.setProperty("org.graphstream.ui", "swing");
+        Graph graph = new SingleGraph("Text Graph");
 
+        // Add nodes and edges
+        for (String vertex : adjacencyMap.keySet()) {
+            if (graph.getNode(vertex) == null) {
+                graph.addNode(vertex).setAttribute("ui.label", vertex);
+            }
+            for (Map.Entry<String, Integer> entry : adjacencyMap.get(vertex).entrySet()) {
+                String neighbor = entry.getKey();
+                int weight = entry.getValue();
+                if (graph.getNode(neighbor) == null) {
+                    graph.addNode(neighbor).setAttribute("ui.label", neighbor);
+                }
+                String edgeId = vertex + "->" + neighbor;
+                if (graph.getEdge(edgeId) == null) {
+                    Edge edge = graph.addEdge(edgeId, vertex, neighbor, true);
+                    edge.setAttribute("weight", weight);
+                    edge.setAttribute("ui.label", weight);
+                }
+            }
+        }
+
+        // Style the graph
+        graph.setAttribute("ui.stylesheet", "node { text-size: 20px; } edge { text-size: 20px; }");
+        graph.setAttribute("ui.quality");
+        graph.setAttribute("ui.antialias");
+
+        // Display the graph
+        graph.display();
+    }
 
     private static String[] readFile(String filePath) {
         StringBuilder content = new StringBuilder();
@@ -86,27 +88,30 @@ public class Graph {
         // Split the cleaned content into words and return as an array
         return cleanedContent.split("\\s+");
     }
+
     public static void main(String[] args) {
-        Graph graph = new Graph();
+        CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        String file = "Text/1.txt";
+        String file = "Text/1.txt"; // Update this path according to your file location
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
+
+        if (words == null) {
+            System.out.println("Error reading the file.");
+            return;
+        }
 
         for (int i = 0; i < words.length - 1; i++) {
             String word1 = words[i];
             String word2 = words[i + 1];
             if (!word1.isEmpty() && !word2.isEmpty()) {
-                graph.addVertex(word1);
-                graph.addVertex(word2);
-                graph.addEdge(word1, word2);
+                customGraph.addVertex(word1);
+                customGraph.addVertex(word2);
+                customGraph.addEdge(word1, word2);
             }
         }
 
-        graph.printGraph();
-
-
-        graph.printGraph();
-
+        customGraph.printGraph();
+        customGraph.displayGraph();
     }
 }
