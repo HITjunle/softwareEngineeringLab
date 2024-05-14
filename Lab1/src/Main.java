@@ -1,17 +1,51 @@
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.FileReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        Path currentDir = Paths.get(System.getProperty("user.dir"));
+        String filePath = currentDir.resolve("test/test1.txt").toString();
+        List<String> words = readFile(filePath);
+        String[] wordsArray = words.toArray(new String[0]);
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+        // 打印结果
+        for (String word : wordsArray) {
+            System.out.println(word);
         }
+    }
+
+    private static List<String> readFile(String filePath) {
+        List<String> words = new ArrayList<>();
+        Pattern pattern = Pattern.compile("[^a-zA-Z]");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                line = pattern.matcher(line).replaceAll(" ").toLowerCase();
+                sb.append(line).append(" ");
+            }
+
+            String[] wordsArray = sb.toString().trim().split("\\s+");
+            for (String word : wordsArray) {
+                words.add(word);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return words;
     }
 }
