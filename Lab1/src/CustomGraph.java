@@ -1,4 +1,7 @@
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomGraph {
+
     private Map<String, Map<String, Integer>> adjacencyMap;
 
     public CustomGraph() {
@@ -33,67 +37,62 @@ public class CustomGraph {
         }
     }
 
-    String queryBridgeWords(String word1, String word2) {
-        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
-            return "No bridge words from word1 to word2!";
-        }
+    //功能需求2：展现有向同
+    public void showDirectedGraph() {
+        System.setProperty("org.graphstream.ui", "swing");
+        Graph streamGraph = new SingleGraph("Text Graph");
 
-        // word1->string, string->word2 其中string为bridge word
-        StringBuilder bridgeWords = new StringBuilder();
-        for (String bridgeWord : adjacencyMap.get(word1).keySet()) {
-            if (adjacencyMap.get(bridgeWord).containsKey(word2)) {
-                bridgeWords.append(bridgeWord).append(" ");
+        // Add nodes and edges
+        for (String vertex : adjacencyMap.keySet()) {
+            if (streamGraph.getNode(vertex) == null) {
+                streamGraph.addNode(vertex).setAttribute("ui.label", vertex);
             }
-        }
-
-        if (bridgeWords.isEmpty()) {
-            return "No bridge words from word1 to word2!";
-        } else {
-            return bridgeWords.toString();
-        }
-    }
-    String generateNewText(String inputText){
-        // 输入新样本，根据brige word生成新样本
-        String[] words = inputText.split("\\s+");
-        StringBuilder newText = new StringBuilder();
-        for (int i = 0; i < words.length - 1; i++) {
-            String word1 = words[i];
-            String word2 = words[i + 1];
-            newText.append(word1).append(" ");
-            if (!word1.isEmpty() && !word2.isEmpty()) {
-                String bridgeWords = queryBridgeWords(word1, word2);
-                if (!bridgeWords.isEmpty()) {
-                    String[] bridgeWordsArray = bridgeWords.split("\\s+");
-                    newText.append(bridgeWordsArray[(int) (Math.random() * bridgeWordsArray.length)]).append(" ");
+            for (Map.Entry<String, Integer> entry : adjacencyMap.get(vertex).entrySet()) {
+                String neighbor = entry.getKey();
+                int weight = entry.getValue();
+                if (streamGraph.getNode(neighbor) == null) {
+                    streamGraph.addNode(neighbor).setAttribute("ui.label", neighbor);
+                }
+                String edgeId = vertex + "->" + neighbor;
+                if (streamGraph.getEdge(edgeId) == null) {
+                    Edge edge = streamGraph.addEdge(edgeId, vertex, neighbor, true);
+                    edge.setAttribute("weight", weight);
+                    edge.setAttribute("ui.label", weight);
                 }
             }
         }
-        newText.append(words[words.length - 1]);
-        return newText.toString();
+
+        // Enhanced styling
+        String stylesheet =
+                "node {" +
+                        "   shape: circle;" +
+                        "   size: 67px;" +
+                        "   fill-color: #1f78b4;" +
+                        "   text-size: 15px;" +
+                        "   text-color: white;" +
+                        "   text-style: bold;" +
+                        "}" +
+                        "edge {" +
+                        "   shape: line;" +
+                        "   size: 2px;" +
+                        "   fill-color: #33a02c;" +
+                        "   arrow-size: 10px, 5px;" +
+                        "   text-size: 15px;" +
+                        "   text-background-mode: rounded-box;" +
+                        "   text-background-color: white;" +
+                        "   text-padding: 3px;" +
+                        "   text-offset: 5px, 0px;" +
+                        "}";
+
+        streamGraph.setAttribute("ui.stylesheet", stylesheet);
+        streamGraph.setAttribute("ui.quality");
+        streamGraph.setAttribute("ui.antialias");
+
+        // Display the graph
+        streamGraph.display();
     }
 
-    String calcShortestPath(String word1, String word2) {
-        // 计算最短路径
-        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
-            return "No path from word1 to word2!";
-        }
 
-
-    }
-//    public void drawGraph() {
-//        SingleGraph graph = new SingleGraph("Custom Graph");
-//        for (String vertex : adjacencyMap.keySet()) {
-//            graph.addNode(vertex);
-//        }
-//
-//        for (String vertex : adjacencyMap.keySet()) {
-//            for (Map.Entry<String, Integer> entry : adjacencyMap.get(vertex).entrySet()) {
-//                graph.addEdge(vertex + entry.getKey(), vertex, entry.getKey(), true);
-//            }
-//        }
-//
-//        graph.display();
-//    }
 
     private static String[] readFile(String filePath) {
         StringBuilder content = new StringBuilder();
@@ -113,12 +112,18 @@ public class CustomGraph {
         // Split the cleaned content into words and return as an array
         return cleanedContent.split("\\s+");
     }
+
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        String file = "Text/1.txt";
+        String file = "Text/1.txt"; // Update this path according to your file location
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
+
+        if (words == null) {
+            System.out.println("Error reading the file.");
+            return;
+        }
 
         for (int i = 0; i < words.length - 1; i++) {
             String word1 = words[i];
@@ -131,8 +136,6 @@ public class CustomGraph {
         }
 
         customGraph.printGraph();
-        // customGraph.drawGraph();
-        System.out.println(customGraph.queryBridgeWords("to", "out"));
-        System.out.println(customGraph.generateNewText("Seek to explore new and exciting synergies"));
+        customGraph.showDirectedGraph();
     }
 }
