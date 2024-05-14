@@ -1,6 +1,11 @@
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,32 +67,44 @@ public class Graph {
 //        graph.display();
 //    }
 
+
+    private static String[] readFile(String filePath) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append(" ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // Clean the content by removing non-alphabetic characters and converting to lowercase
+        String cleanedContent = content.toString().replaceAll("[^a-zA-Z ]", " ").toLowerCase();
+
+        // Split the cleaned content into words and return as an array
+        return cleanedContent.split("\\s+");
+    }
     public static void main(String[] args) {
         Graph graph = new Graph();
+        Path currentDir = Paths.get(System.getProperty("user.dir"));
+        String file = "Text/1.txt";
+        String filePath = currentDir.resolve(file).toString();
+        String[] words = readFile(filePath);
 
-        // Example input
-        graph.addVertex("to");
-        graph.addVertex("explore");
-        graph.addVertex("strange");
-        graph.addVertex("new");
-        graph.addVertex("worlds");
-        graph.addVertex("seek");
-        graph.addVertex("out");
-        graph.addVertex("life");
-        graph.addVertex("and");
-        graph.addVertex("civilizations");
+        for (int i = 0; i < words.length - 1; i++) {
+            String word1 = words[i];
+            String word2 = words[i + 1];
+            if (!word1.isEmpty() && !word2.isEmpty()) {
+                graph.addVertex(word1);
+                graph.addVertex(word2);
+                graph.addEdge(word1, word2);
+            }
+        }
 
-        graph.addEdge("to", "explore");
-        graph.addEdge("to", "seek");
-        graph.addEdge("explore", "strange");
-        graph.addEdge("strange", "new");
-        graph.addEdge("new", "worlds");
-        graph.addEdge("seek", "out");
-        graph.addEdge("out", "new");
-        graph.addEdge("new", "life");
-        graph.addEdge("life", "and");
-        graph.addEdge("and", "new");
-        graph.addEdge("new", "civilizations");
+        graph.printGraph();
+
 
         graph.printGraph();
 
