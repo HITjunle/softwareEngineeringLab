@@ -37,38 +37,62 @@ public class CustomGraph {
         }
     }
 
-    public void displayGraph() {
+    //功能需求2：展现有向同
+    public void showDirectedGraph() {
         System.setProperty("org.graphstream.ui", "swing");
-        Graph graph = new SingleGraph("Text Graph");
+        Graph streamGraph = new SingleGraph("Text Graph");
 
         // Add nodes and edges
         for (String vertex : adjacencyMap.keySet()) {
-            if (graph.getNode(vertex) == null) {
-                graph.addNode(vertex).setAttribute("ui.label", vertex);
+            if (streamGraph.getNode(vertex) == null) {
+                streamGraph.addNode(vertex).setAttribute("ui.label", vertex);
             }
             for (Map.Entry<String, Integer> entry : adjacencyMap.get(vertex).entrySet()) {
                 String neighbor = entry.getKey();
                 int weight = entry.getValue();
-                if (graph.getNode(neighbor) == null) {
-                    graph.addNode(neighbor).setAttribute("ui.label", neighbor);
+                if (streamGraph.getNode(neighbor) == null) {
+                    streamGraph.addNode(neighbor).setAttribute("ui.label", neighbor);
                 }
                 String edgeId = vertex + "->" + neighbor;
-                if (graph.getEdge(edgeId) == null) {
-                    Edge edge = graph.addEdge(edgeId, vertex, neighbor, true);
+                if (streamGraph.getEdge(edgeId) == null) {
+                    Edge edge = streamGraph.addEdge(edgeId, vertex, neighbor, true);
                     edge.setAttribute("weight", weight);
                     edge.setAttribute("ui.label", weight);
                 }
             }
         }
 
-        // Style the graph
-        graph.setAttribute("ui.stylesheet", "node { text-size: 20px; } edge { text-size: 20px; }");
-        graph.setAttribute("ui.quality");
-        graph.setAttribute("ui.antialias");
+        // Enhanced styling
+        String stylesheet =
+                "node {" +
+                        "   shape: circle;" +
+                        "   size: 67px;" +
+                        "   fill-color: #1f78b4;" +
+                        "   text-size: 15px;" +
+                        "   text-color: white;" +
+                        "   text-style: bold;" +
+                        "}" +
+                        "edge {" +
+                        "   shape: line;" +
+                        "   size: 2px;" +
+                        "   fill-color: #33a02c;" +
+                        "   arrow-size: 10px, 5px;" +
+                        "   text-size: 15px;" +
+                        "   text-background-mode: rounded-box;" +
+                        "   text-background-color: white;" +
+                        "   text-padding: 3px;" +
+                        "   text-offset: 5px, 0px;" +
+                        "}";
+
+        streamGraph.setAttribute("ui.stylesheet", stylesheet);
+        streamGraph.setAttribute("ui.quality");
+        streamGraph.setAttribute("ui.antialias");
 
         // Display the graph
-        graph.display();
+        streamGraph.display();
     }
+
+
 
     private static String[] readFile(String filePath) {
         StringBuilder content = new StringBuilder();
@@ -112,6 +136,6 @@ public class CustomGraph {
         }
 
         customGraph.printGraph();
-        customGraph.displayGraph();
+        customGraph.showDirectedGraph();
     }
 }
