@@ -10,44 +10,22 @@
     <orderEntry type="library" name="java" level="project" />
     <orderEntry type="module-library">
       <library>
-        <CLASSES />
-        <JAVADOC />
-        <SOURCES>
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-core/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-core/src/test/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-demo/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-demo/src/test/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-ext/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-ext/src/test/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-guava/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-guava/src/test/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-io/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-io/src/test/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-opt/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-opt/src/test/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-unimi-dsi/src/main/java" />
-          <root url="file://$MODULE_DIR$/../../../javaLib/jgrapht-1.5.2/jgrapht-1.5.2/source/jgrapht-unimi-dsi/src/test/java" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../gs-ui-swing-2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../../gs-ui-swing-2.0.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../gs-core-2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-core-2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-ui-swing-2.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../javaLib/gs-ui-swing-2.0.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

@@ -334,7 +334,7 @@ public class CustomGraph {
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        String file = "Text/1.txt"; // Update this path according to your file location
+        String file = "Text/1.txt";
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
@@ -353,12 +353,44 @@ public class CustomGraph {
             }
         }
 
-        customGraph.printGraph();
-        // customGraph.showDirectedGraph();
-        System.out.println(customGraph.queryBridgeWords("to", "out"));
-        System.out.println(customGraph.generateNewText("Seek to explore new and exciting synergies"));
-        System.out.println(customGraph.calcShortestPath("to", "and"));
-        customGraph.showDirectedGraph("to", "and");
-        // customGraph.randomWalk();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("请选择一个操作：");
+            System.out.println("1. 显示有向图");
+            System.out.println("2. 查询桥接词");
+            System.out.println("3. 最短路径");
+            System.out.println("4. 随机游走");
+            System.out.println("0. 退出");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // 处理换行符
+
+            switch (choice) {
+                case 1:
+                    customGraph.showDirectedGraph();
+                    break;
+                case 2:
+                    System.out.print("输入两个单词以查询桥接词：");
+                    String word1 = scanner.next();
+                    String word2 = scanner.next();
+                    System.out.println(customGraph.queryBridgeWords(word1, word2));
+                    break;
+                case 3:
+                    System.out.print("输入两个单词以查询最短路径：");
+                    word1 = scanner.next();
+                    word2 = scanner.next();
+                    System.out.println(customGraph.calcShortestPath(word1, word2));
+                    customGraph.showDirectedGraph(word1, word2);
+                    break;
+                case 4:
+                    customGraph.randomWalk();
+                    break;
+                case 0:
+                    System.out.println("退出程序");
+                    System.exit(0);
+                default:
+                    System.out.println("无效选择，请重新选择。");
+            }
+        }
     }
+
 }
