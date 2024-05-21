@@ -113,7 +113,7 @@ public class CustomGraph {
 
             Map<String, Integer> neighbors = adjacencyMap.get(currentVertex);
             for (String neighbor : neighbors.keySet()) {
-                int altDistance = distances.get(currentVertex) + neighbors.get(neighbor);
+                int altDistance = distances.get(currentVertex) + 1;
                 if (altDistance < distances.get(neighbor)) {
                     distances.put(neighbor, altDistance);
                     previousVertices.put(neighbor, currentVertex);
@@ -161,7 +161,7 @@ public class CustomGraph {
             path.add(next);
 
             System.out.println("Current path: " + String.join(" -> ", path));
-            System.out.print("Enter 'stop' to stop the random walk, or press r to continue: ");
+            System.out.print("Enter 'stop' to stop the random walk, or press Enter to continue: ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("stop")) {
                 break;
@@ -334,7 +334,7 @@ public class CustomGraph {
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        String file = "Text/2.txt"; // Update this path according to your file location
+        String file = "Text/1.txt"; // Update this path according to your file location
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
@@ -355,10 +355,10 @@ public class CustomGraph {
 
         customGraph.printGraph();
         // customGraph.showDirectedGraph();
-        System.out.println(customGraph.queryBridgeWords("to", "to"));
+        System.out.println(customGraph.queryBridgeWords("to", "out"));
         System.out.println(customGraph.generateNewText("Seek to explore new and exciting synergies"));
-        System.out.println(customGraph.calcShortestPath("a", "c"));
-        customGraph.showDirectedGraph("a", "c");
-        customGraph.randomWalk();
+        System.out.println(customGraph.calcShortestPath("to", "and"));
+        customGraph.showDirectedGraph("to", "and");
+        // customGraph.randomWalk();
     }
 }
