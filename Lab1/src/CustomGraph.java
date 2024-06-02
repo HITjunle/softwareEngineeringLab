@@ -334,7 +334,7 @@ public class CustomGraph {
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        String file = "Text/1.txt"; // Update this path according to your file location
+        String file = "Lab1/Text/2.txt"; // Update this path according to your file location
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
