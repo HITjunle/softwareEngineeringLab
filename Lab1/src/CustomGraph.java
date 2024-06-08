@@ -38,12 +38,12 @@ public class CustomGraph {
     }
 
     public void addVertex(String vertex) {
-        adjacencyMap.putIfAbsent(vertex, new HashMap<>());
+        adjacencyMap.putIfAbsent(vertex.toLowerCase(), new HashMap<>());
     }
 
     public void addEdge(String from, String to) {
-        Map<String, Integer> neighbors = adjacencyMap.get(from);
-        neighbors.put(to, neighbors.getOrDefault(to, 0) + 1);
+        Map<String, Integer> neighbors = adjacencyMap.get(from.toLowerCase());
+        neighbors.put(to.toLowerCase(), neighbors.getOrDefault(to, 0) + 1);
     }
 
     public void printGraph() {
@@ -57,22 +57,22 @@ public class CustomGraph {
     }
 
     String queryBridgeWords(String word1, String word2) {
-        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
-            return "No bridge words from word1 to word2!";
+        if (!adjacencyMap.containsKey(word1.toLowerCase()) || !adjacencyMap.containsKey(word2.toLowerCase())) {
+            return "No bridge words from "+word1.toLowerCase() +" to "+word2.toLowerCase()+"!";
         }
 
         // word1->string, string->word2 其中string为bridge word
         StringBuilder bridgeWords = new StringBuilder();
-        for (String bridgeWord : adjacencyMap.get(word1).keySet()) {
-            if (adjacencyMap.get(bridgeWord).containsKey(word2)) {
+        for (String bridgeWord : adjacencyMap.get(word1.toLowerCase()).keySet()) {
+            if (adjacencyMap.get(bridgeWord).containsKey(word2.toLowerCase())) {
                 bridgeWords.append(bridgeWord).append(" ");
             }
         }
 
         if (bridgeWords.isEmpty()) {
-            return "No bridge words from word1 to word2!";
+            return "No bridge words from "+word1.toLowerCase() +" to "+word2.toLowerCase()+"!";
         } else {
-            return bridgeWords.toString();
+            return bridgeWords.toString().trim();
         }
     }
 
