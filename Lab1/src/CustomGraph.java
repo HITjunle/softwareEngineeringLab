@@ -11,17 +11,39 @@ public class CustomGraph {
 
     private Map<String, Map<String, Integer>> adjacencyMap;
 
+    // Enhanced styling
+    String stylesheet =
+            "node {" +
+                    "   shape: circle;" +
+                    "   size: 30px;" +
+                    "   fill-color: #1f78b4;" +
+                    "   text-size: 10px;" +
+                    "   text-color: white;" +
+                    "   text-style: bold;" +
+                    "}" +
+                    "edge {" +
+                    "   shape: line;" +
+                    "   size: 2px;" +
+                    "   fill-color: #33a02c;" +
+                    "   arrow-size: 5px, 4px;" +
+                    "   text-size: 10px;" +
+                    "   text-background-mode: rounded-box;" +
+                    "   text-background-color: white;" +
+                    "   text-padding: 3px;" +
+                    "   text-offset: 5px, 0px;" +
+                    "}";
+
     public CustomGraph() {
         this.adjacencyMap = new HashMap<>();
     }
 
     public void addVertex(String vertex) {
-        adjacencyMap.putIfAbsent(vertex, new HashMap<>());
+        adjacencyMap.putIfAbsent(vertex.toLowerCase(), new HashMap<>());
     }
 
     public void addEdge(String from, String to) {
-        Map<String, Integer> neighbors = adjacencyMap.get(from);
-        neighbors.put(to, neighbors.getOrDefault(to, 0) + 1);
+        Map<String, Integer> neighbors = adjacencyMap.get(from.toLowerCase());
+        neighbors.put(to.toLowerCase(), neighbors.getOrDefault(to, 0) + 1);
     }
 
     public void printGraph() {
@@ -35,32 +57,33 @@ public class CustomGraph {
     }
 
     String queryBridgeWords(String word1, String word2) {
-        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
-            return "No bridge words from word1 to word2!";
+        if (!adjacencyMap.containsKey(word1.toLowerCase()) || !adjacencyMap.containsKey(word2.toLowerCase())) {
+            return "No bridge words from "+word1.toLowerCase() +" to "+word2.toLowerCase()+"!";
         }
 
         // word1->string, string->word2 其中string为bridge word
         StringBuilder bridgeWords = new StringBuilder();
-        for (String bridgeWord : adjacencyMap.get(word1).keySet()) {
-            if (adjacencyMap.get(bridgeWord).containsKey(word2)) {
+        for (String bridgeWord : adjacencyMap.get(word1.toLowerCase()).keySet()) {
+            if (adjacencyMap.get(bridgeWord).containsKey(word2.toLowerCase())) {
                 bridgeWords.append(bridgeWord).append(" ");
             }
         }
 
         if (bridgeWords.isEmpty()) {
-            return "No bridge words from word1 to word2!";
+            return "No bridge words from "+word1.toLowerCase() +" to "+word2.toLowerCase()+"!";
         } else {
-            return bridgeWords.toString();
+            return bridgeWords.toString().trim();
         }
     }
 
     public String generateNewText(String inputText) {
-        String[] words = inputText.split("\\s+");
+        String[] words = inputText.replaceAll("[^a-zA-Z ]", "").split("\\s+");
+
         StringBuilder newText = new StringBuilder();
 
         for (int i = 0; i < words.length - 1; i++) {
-            String word1 = words[i];
-            String word2 = words[i + 1];
+            String word1 = words[i].toLowerCase();
+            String word2 = words[i + 1].toLowerCase();
             newText.append(word1).append(" ");
 
             String bridgeWords = queryBridgeWords(word1, word2);
@@ -80,6 +103,8 @@ public class CustomGraph {
     }
 
     public String calcShortestPath(String word1, String word2) {
+        word1 = word1.toLowerCase();
+        word2 = word2.toLowerCase();
         if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
             return "No path from " + word1 + " to " + word2;
         }
@@ -179,10 +204,14 @@ public class CustomGraph {
         }
     }
 
+
     //功能需求2：展现有向图
     public void showDirectedGraph() {
         System.setProperty("org.graphstream.ui", "swing");
         Graph streamGraph = new SingleGraph("Text Graph");
+
+        // 用于构建控制台输出的图结构
+        StringBuilder graphRepresentation = new StringBuilder();
 
         // Add nodes and edges
         for (String vertex : adjacencyMap.keySet()) {
@@ -200,31 +229,26 @@ public class CustomGraph {
                     Edge edge = streamGraph.addEdge(edgeId, vertex, neighbor, true);
                     edge.setAttribute("weight", weight);
                     edge.setAttribute("ui.label", weight);
+
+                    // 在添加边时打印图结构
+                    graphRepresentation.append(vertex)
+                            .append(" -> ")
+                            .append(neighbor)
+                            .append(" (")
+                            .append(weight)
+                            .append(")\n");
                 }
             }
         }
 
-        // Enhanced styling
-        String stylesheet =
-                "node {" +
-                        "   shape: circle;" +
-                        "   size: 67px;" +
-                        "   fill-color: #1f78b4;" +
-                        "   text-size: 15px;" +
-                        "   text-color: white;" +
-                        "   text-style: bold;" +
-                        "}" +
-                        "edge {" +
-                        "   shape: line;" +
-                        "   size: 2px;" +
-                        "   fill-color: #33a02c;" +
-                        "   arrow-size: 10px, 5px;" +
-                        "   text-size: 15px;" +
-                        "   text-background-mode: rounded-box;" +
-                        "   text-background-color: white;" +
-                        "   text-padding: 3px;" +
-                        "   text-offset: 5px, 0px;" +
-                        "}";
+        // 打印图结构到控制台
+        System.out.println(graphRepresentation.toString());
+// 设置布局参数，使图形更紧凑
+        streamGraph.setAttribute("layout.force", 0.01); // 增加吸引力，使节点更靠近
+        streamGraph.setAttribute("layout.repulsion", 0.01); // 减少排斥力，使节点更靠近
+        streamGraph.setAttribute("ui.quality"); // 提高渲染质量
+        streamGraph.setAttribute("ui.antialias"); // 开启抗锯形
+
 
         streamGraph.setAttribute("ui.stylesheet", stylesheet);
         streamGraph.setAttribute("ui.quality");
@@ -233,6 +257,8 @@ public class CustomGraph {
         // Display the graph
         streamGraph.display();
     }
+
+
 
     // 重载方法，展现有向图并高亮最短路径
     public void showDirectedGraph(String word1, String word2) {
@@ -259,35 +285,10 @@ public class CustomGraph {
             }
         }
 
-        // Enhanced styling
-        String stylesheet =
-                "node {" +
-                        "   shape: circle;" +
-                        "   size: 67px;" +
-                        "   fill-color: #1f78b4;" +
-                        "   text-size: 15px;" +
-                        "   text-color: white;" +
-                        "   text-style: bold;" +
-                        "}" +
-                        "edge {" +
-                        "   shape: line;" +
-                        "   size: 2px;" +
-                        "   fill-color: #33a02c;" +
-                        "   arrow-size: 10px, 5px;" +
-                        "   text-size: 15px;" +
-                        "   text-background-mode: rounded-box;" +
-                        "   text-background-color: white;" +
-                        "   text-padding: 3px;" +
-                        "   text-offset: 5px, 0px;" +
-                        "}" +
-                        "edge.highlighted {" +
-                        "   fill-color: red;" +
-                        "   size: 3px;" +
-                        "}";
-
         streamGraph.setAttribute("ui.stylesheet", stylesheet);
         streamGraph.setAttribute("ui.quality");
         streamGraph.setAttribute("ui.antialias");
+
 
         // Highlight the shortest path
         String shortestPath = calcShortestPath(word1, word2);
@@ -334,7 +335,8 @@ public class CustomGraph {
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
-        String file = "Lab1/Text/2.txt"; // Update this path according to your file location
+        String file = "Text/2.txt";
+
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
@@ -353,12 +355,53 @@ public class CustomGraph {
             }
         }
 
-        customGraph.printGraph();
-        // customGraph.showDirectedGraph();
-        System.out.println(customGraph.queryBridgeWords("to", "out"));
-        System.out.println(customGraph.generateNewText("Seek to explore new and exciting synergies"));
-        System.out.println(customGraph.calcShortestPath("to", "and"));
-        customGraph.showDirectedGraph("to", "and");
-        // customGraph.randomWalk();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("请选择一个操作：");
+            System.out.println("1. 显示有向图");
+            System.out.println("2. 查询桥接词");
+            System.out.println("3. 最短路径");
+            System.out.println("4. 随机游走");
+            System.out.println("5. bridge word生成新文本");
+            System.out.println("0. 退出");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // 处理换行符
+
+            switch (choice) {
+                case 1:
+
+                    customGraph.showDirectedGraph();
+                    break;
+                case 2:
+                    System.out.print("输入两个单词以查询桥接词：");
+                    String word1 = scanner.next();
+                    String word2 = scanner.next();
+                    System.out.println(customGraph.queryBridgeWords(word1, word2));
+                    break;
+                case 3:
+                    System.out.print("输入两个单词以查询最短路径：");
+                    word1 = scanner.next();
+                    word2 = scanner.next();
+                    System.out.println(customGraph.calcShortestPath(word1, word2));
+                    customGraph.showDirectedGraph(word1, word2);
+                    break;
+                case 4:
+                    customGraph.randomWalk();
+                    break;
+                case 5:
+                    System.out.println("根据bridge word生成新文本，请输入文本：");
+                    String bridgeWord = scanner.nextLine(); // 读取整行文本
+
+                    System.out.println(customGraph.generateNewText(bridgeWord));
+                    break;
+
+
+                case 0:
+                    System.out.println("退出程序");
+                    System.exit(0);
+                default:
+                    System.out.println("无效选择，请重新选择。");
+            }
+        }
     }
 }
