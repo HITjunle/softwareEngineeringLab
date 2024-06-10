@@ -119,7 +119,7 @@ public class CustomGraph {
         }
         distances.put(word1, 0); // 起始节点距离为0
 
-        PriorityQueue<String> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get)); // 优先队列，按距离降序
+        PriorityQueue<String> queue = new PriorityQueue<>((a, b) -> distances.get(a) - distances.get(b)); // 优先队列，按距离降序
         queue.offer(word1); // 将起始节点加入队列
 
         while (!queue.isEmpty()) {
@@ -138,7 +138,7 @@ public class CustomGraph {
 
             Map<String, Integer> neighbors = adjacencyMap.get(currentVertex);
             for (String neighbor : neighbors.keySet()) {
-                int altDistance = distances.get(currentVertex) + neighbors.get(neighbor);
+                int altDistance = distances.get(currentVertex) + 1;
                 if (altDistance < distances.get(neighbor)) {
                     distances.put(neighbor, altDistance);
                     previousVertices.put(neighbor, currentVertex);
@@ -336,6 +336,7 @@ public class CustomGraph {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
         String file = "Text/2.txt";
+
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
@@ -403,5 +404,4 @@ public class CustomGraph {
             }
         }
     }
-
 }
