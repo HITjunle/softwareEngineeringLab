@@ -1,37 +1,44 @@
-import org.graphstream.graph.Edge;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
-
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 
+
+/**
+ * CustomGraph class represents a directed graph that can be used to perform various operations
+ * such as finding bridge words,
+ * generating new text, and calculating the shortest path between two words.
+ * The graph is represented as an adjacency list where each vertex
+ * is mapped to a list of its neighbors along with the edge weights.
+ */
 public class CustomGraph {
 
     private Map<String, Map<String, Integer>> adjacencyMap;
 
     // Enhanced styling
     String stylesheet =
-            "node {" +
-                    "   shape: circle;" +
-                    "   size: 30px;" +
-                    "   fill-color: #1f78b4;" +
-                    "   text-size: 10px;" +
-                    "   text-color: white;" +
-                    "   text-style: bold;" +
-                    "}" +
-                    "edge {" +
-                    "   shape: line;" +
-                    "   size: 2px;" +
-                    "   fill-color: #33a02c;" +
-                    "   arrow-size: 5px, 4px;" +
-                    "   text-size: 10px;" +
-                    "   text-background-mode: rounded-box;" +
-                    "   text-background-color: white;" +
-                    "   text-padding: 3px;" +
-                    "   text-offset: 5px, 0px;" +
-                    "}";
+            "node {"
+                    + "   shape: circle;"
+                    + "   size: 30px;"
+                    + "   fill-color: #1f78b4;"
+                    + "   text-size: 10px;"
+                    + "   text-color: white;"
+                    + "   text-style: bold;"
+                    + "}"
+                    + "edge {"
+                    + "   shape: line;"
+                    + "   size: 2px;"
+                    + "   fill-color: #33a02c;"
+                    + "   arrow-size: 5px, 4px;"
+                    + "   text-size: 10px;"
+                    + "   text-background-mode: rounded-box;"
+                    + "   text-background-color: white;"
+                    + "   text-padding: 3px;"
+                    + "   text-offset: 5px, 0px;"
+                    + "}";
 
     public CustomGraph() {
         this.adjacencyMap = new HashMap<>();
@@ -46,6 +53,9 @@ public class CustomGraph {
         neighbors.put(to.toLowerCase(), neighbors.getOrDefault(to, 0) + 1);
     }
 
+    /**
+     * Prints the graph in the form of adjacency list.
+     */
     public void printGraph() {
         for (String vertex : adjacencyMap.keySet()) {
             System.out.print(vertex + " -> ");
@@ -57,8 +67,10 @@ public class CustomGraph {
     }
 
     String queryBridgeWords(String word1, String word2) {
-        if (!adjacencyMap.containsKey(word1.toLowerCase()) || !adjacencyMap.containsKey(word2.toLowerCase())) {
-            return "No bridge words from "+word1.toLowerCase() +" to "+word2.toLowerCase()+"!";
+        if (!adjacencyMap.containsKey(word1.toLowerCase())
+                || !adjacencyMap.containsKey(word2.toLowerCase())) {
+            return "No bridge words from "
+                    + word1.toLowerCase() + " to " + word2.toLowerCase() + "!";
         }
 
         // word1->string, string->word2 其中string为bridge word
@@ -70,12 +82,19 @@ public class CustomGraph {
         }
 
         if (bridgeWords.isEmpty()) {
-            return "No bridge words from "+word1.toLowerCase() +" to "+word2.toLowerCase()+"!";
+            return "No bridge words from "
+                    + word1.toLowerCase() + " to " + word2.toLowerCase() + "!";
         } else {
             return bridgeWords.toString().trim();
         }
     }
 
+    /**
+     * Generates new text by inserting bridge words between adjacent words in the input text.
+     *
+     *@param inputText The input text to generate new text from.
+     *@return The new text with bridge words inserted between adjacent words.
+     **/
     public String generateNewText(String inputText) {
         String[] words = inputText.replaceAll("[^a-zA-Z ]", "").split("\\s+");
 
@@ -102,6 +121,14 @@ public class CustomGraph {
         return newText.toString();
     }
 
+
+    /**
+     * Calculates the shortest path between two words in the graph using Dijkstra's algorithm.
+     *
+     * @param word1 The starting word.
+     * @param word2 The ending word.
+     * @return The shortest path between the two words, or a message if no path exists.
+     **/
     public String calcShortestPath(String word1, String word2) {
         word1 = word1.toLowerCase();
         word2 = word2.toLowerCase();
@@ -119,7 +146,8 @@ public class CustomGraph {
         }
         distances.put(word1, 0); // 起始节点距离为0
 
-        PriorityQueue<String> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get)); // 优先队列，按距离降序
+        PriorityQueue<String> queue
+                = new PriorityQueue<>((a, b) -> distances.get(a) - distances.get(b)); // 优先队列，按距离降序
         queue.offer(word1); // 将起始节点加入队列
 
         while (!queue.isEmpty()) {
@@ -138,7 +166,7 @@ public class CustomGraph {
 
             Map<String, Integer> neighbors = adjacencyMap.get(currentVertex);
             for (String neighbor : neighbors.keySet()) {
-                int altDistance = distances.get(currentVertex) + neighbors.get(neighbor);
+                int altDistance = distances.get(currentVertex) + 1;
                 if (altDistance < distances.get(neighbor)) {
                     distances.put(neighbor, altDistance);
                     previousVertices.put(neighbor, currentVertex);
@@ -150,8 +178,12 @@ public class CustomGraph {
         return "No path from " + word1 + " to " + word2;
     }
 
+    /**
+     * Performs a random walk on the graph starting from a random vertex.
+     * The user can stop the walk at any time by entering 'stop'.
+     **/
     public void randomWalk() {
-        Scanner scanner = new Scanner(System.in);
+        final Scanner scanner = new Scanner(System.in);
         System.out.println("Enter 'stop' to stop the random walk.");
 
         Random random = new Random();
@@ -159,7 +191,8 @@ public class CustomGraph {
         Set<String> visitedEdges = new HashSet<>(); // 记录已访问的边
 
         // 选择一个随机起点
-        String start = adjacencyMap.keySet().stream().skip(random.nextInt(adjacencyMap.size())).findFirst().orElse(null);
+        String start = adjacencyMap.keySet()
+                .stream().skip(random.nextInt(adjacencyMap.size())).findFirst().orElse(null);
         if (start == null) {
             System.out.println("The graph is empty.");
             return;
@@ -204,8 +237,9 @@ public class CustomGraph {
         }
     }
 
-
-    //功能需求2：展现有向图
+    /**
+     * 展示有向图.
+     */
     public void showDirectedGraph() {
         System.setProperty("org.graphstream.ui", "swing");
         Graph streamGraph = new SingleGraph("Text Graph");
@@ -243,7 +277,7 @@ public class CustomGraph {
 
         // 打印图结构到控制台
         System.out.println(graphRepresentation.toString());
-// 设置布局参数，使图形更紧凑
+        // 设置布局参数，使图形更紧凑
         streamGraph.setAttribute("layout.force", 0.01); // 增加吸引力，使节点更靠近
         streamGraph.setAttribute("layout.repulsion", 0.01); // 减少排斥力，使节点更靠近
         streamGraph.setAttribute("ui.quality"); // 提高渲染质量
@@ -261,6 +295,12 @@ public class CustomGraph {
 
 
     // 重载方法，展现有向图并高亮最短路径
+    /**
+     * Displays the directed graph with the shortest path highlighted between two words.
+     *
+     * @param word1 The starting word.
+     * @param word2 The ending word.
+     **/
     public void showDirectedGraph(String word1, String word2) {
         System.setProperty("org.graphstream.ui", "swing");
         Graph streamGraph = new SingleGraph("Text Graph");
@@ -332,10 +372,17 @@ public class CustomGraph {
         return cleanedContent.split("\\s+");
     }
 
+    /**
+     * Main method to interact with the graph and perform various operations.
+     *
+     * @param args The command line arguments.
+     **/
+    @SuppressWarnings("checkstyle:FallThrough")
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
         String file = "Text/2.txt";
+
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
@@ -394,7 +441,6 @@ public class CustomGraph {
                     System.out.println(customGraph.generateNewText(bridgeWord));
                     break;
 
-
                 case 0:
                     System.out.println("退出程序");
                     System.exit(0);
@@ -403,5 +449,4 @@ public class CustomGraph {
             }
         }
     }
-
 }
