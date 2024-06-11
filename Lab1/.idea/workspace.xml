@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbe84a7a-9b3c-4e71-b7aa-f306d9b5d553" name="Changes" comment="" />
+    <list default="true" id="bbe84a7a-9b3c-4e71-b7aa-f306d9b5d553" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lab1.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Text/2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/random_walk.txt" beforeDir="false" afterPath="$PROJECT_DIR$/random_walk.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CustomGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CustomGraph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CustomGraphTest.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -34,10 +44,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Reverting in master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "E:/software_proj/software_lab/lab1/softwareEngineeringLab",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
