@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="softwareEngineeringLab:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/softwareEngineeringLab_jar</output-path>
+    <root id="archive" name="softwareEngineeringLab.jar">
+      <element id="module-output" name="softwareEngineeringLab" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../gs-core-2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../gs-ui-swing-2.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
