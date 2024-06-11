@@ -18,6 +18,9 @@ public class CustomGraph {
 
     private Map<String, Map<String, Integer>> adjacencyMap;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     // Enhanced styling
     String stylesheet =
             "node {"
@@ -40,17 +43,23 @@ public class CustomGraph {
                     + "   text-offset: 5px, 0px;"
                     + "}";
 
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
     public CustomGraph() {
         this.adjacencyMap = new HashMap<>();
     }
 
     public void addVertex(String vertex) {
-        adjacencyMap.putIfAbsent(vertex.toLowerCase(), new HashMap<>());
+        adjacencyMap.putIfAbsent(vertex, new HashMap<>());
     }
 
     public void addEdge(String from, String to) {
-        Map<String, Integer> neighbors = adjacencyMap.get(from.toLowerCase());
-        neighbors.put(to.toLowerCase(), neighbors.getOrDefault(to, 0) + 1);
+        Map<String, Integer> neighbors = adjacencyMap.get(from);
+        neighbors.put(to, neighbors.getOrDefault(to, 0) + 1);
     }
 
     /**
@@ -67,25 +76,52 @@ public class CustomGraph {
     }
 
     String queryBridgeWords(String word1, String word2) {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         if (!adjacencyMap.containsKey(word1.toLowerCase())
                 || !adjacencyMap.containsKey(word2.toLowerCase())) {
             return "No bridge words from "
                     + word1.toLowerCase() + " to " + word2.toLowerCase() + "!";
+=======
+        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
+            return "No bridge words from word1 to word2!";
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
+            return "No bridge words from word1 to word2!";
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+        if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
+            return "No bridge words from word1 to word2!";
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
         }
 
         // word1->string, string->word2 其中string为bridge word
         StringBuilder bridgeWords = new StringBuilder();
-        for (String bridgeWord : adjacencyMap.get(word1.toLowerCase()).keySet()) {
-            if (adjacencyMap.get(bridgeWord).containsKey(word2.toLowerCase())) {
+        for (String bridgeWord : adjacencyMap.get(word1).keySet()) {
+            if (adjacencyMap.get(bridgeWord).containsKey(word2)) {
                 bridgeWords.append(bridgeWord).append(" ");
             }
         }
 
         if (bridgeWords.isEmpty()) {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
             return "No bridge words from "
                     + word1.toLowerCase() + " to " + word2.toLowerCase() + "!";
+=======
+            return "No bridge words from word1 to word2!";
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+            return "No bridge words from word1 to word2!";
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+            return "No bridge words from word1 to word2!";
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
         } else {
-            return bridgeWords.toString().trim();
+            return bridgeWords.toString();
         }
     }
 
@@ -96,13 +132,12 @@ public class CustomGraph {
      *@return The new text with bridge words inserted between adjacent words.
      **/
     public String generateNewText(String inputText) {
-        String[] words = inputText.replaceAll("[^a-zA-Z ]", "").split("\\s+");
-
+        String[] words = inputText.split("\\s+");
         StringBuilder newText = new StringBuilder();
 
         for (int i = 0; i < words.length - 1; i++) {
-            String word1 = words[i].toLowerCase();
-            String word2 = words[i + 1].toLowerCase();
+            String word1 = words[i];
+            String word2 = words[i + 1];
             newText.append(word1).append(" ");
 
             String bridgeWords = queryBridgeWords(word1, word2);
@@ -130,8 +165,6 @@ public class CustomGraph {
      * @return The shortest path between the two words, or a message if no path exists.
      **/
     public String calcShortestPath(String word1, String word2) {
-        word1 = word1.toLowerCase();
-        word2 = word2.toLowerCase();
         if (!adjacencyMap.containsKey(word1) || !adjacencyMap.containsKey(word2)) {
             return "No path from " + word1 + " to " + word2;
         }
@@ -237,15 +270,22 @@ public class CustomGraph {
         }
     }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     /**
      * 展示有向图.
      */
+=======
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+    //功能需求2：展现有向图
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
     public void showDirectedGraph() {
         System.setProperty("org.graphstream.ui", "swing");
         Graph streamGraph = new SingleGraph("Text Graph");
-
-        // 用于构建控制台输出的图结构
-        StringBuilder graphRepresentation = new StringBuilder();
 
         // Add nodes and edges
         for (String vertex : adjacencyMap.keySet()) {
@@ -263,18 +303,13 @@ public class CustomGraph {
                     Edge edge = streamGraph.addEdge(edgeId, vertex, neighbor, true);
                     edge.setAttribute("weight", weight);
                     edge.setAttribute("ui.label", weight);
-
-                    // 在添加边时打印图结构
-                    graphRepresentation.append(vertex)
-                            .append(" -> ")
-                            .append(neighbor)
-                            .append(" (")
-                            .append(weight)
-                            .append(")\n");
                 }
             }
         }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         // 打印图结构到控制台
         System.out.println(graphRepresentation.toString());
         // 设置布局参数，使图形更紧凑
@@ -283,6 +318,39 @@ public class CustomGraph {
         streamGraph.setAttribute("ui.quality"); // 提高渲染质量
         streamGraph.setAttribute("ui.antialias"); // 开启抗锯形
 
+=======
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+        // Enhanced styling
+        String stylesheet =
+                "node {" +
+                        "   shape: circle;" +
+                        "   size: 67px;" +
+                        "   fill-color: #1f78b4;" +
+                        "   text-size: 15px;" +
+                        "   text-color: white;" +
+                        "   text-style: bold;" +
+                        "}" +
+                        "edge {" +
+                        "   shape: line;" +
+                        "   size: 2px;" +
+                        "   fill-color: #33a02c;" +
+                        "   arrow-size: 10px, 5px;" +
+                        "   text-size: 15px;" +
+                        "   text-background-mode: rounded-box;" +
+                        "   text-background-color: white;" +
+                        "   text-padding: 3px;" +
+                        "   text-offset: 5px, 0px;" +
+                        "}";
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
 
         streamGraph.setAttribute("ui.stylesheet", stylesheet);
         streamGraph.setAttribute("ui.quality");
@@ -291,8 +359,6 @@ public class CustomGraph {
         // Display the graph
         streamGraph.display();
     }
-
-
 
     // 重载方法，展现有向图并高亮最短路径
     /**
@@ -325,10 +391,35 @@ public class CustomGraph {
             }
         }
 
+        // Enhanced styling
+        String stylesheet =
+                "node {" +
+                        "   shape: circle;" +
+                        "   size: 67px;" +
+                        "   fill-color: #1f78b4;" +
+                        "   text-size: 15px;" +
+                        "   text-color: white;" +
+                        "   text-style: bold;" +
+                        "}" +
+                        "edge {" +
+                        "   shape: line;" +
+                        "   size: 2px;" +
+                        "   fill-color: #33a02c;" +
+                        "   arrow-size: 10px, 5px;" +
+                        "   text-size: 15px;" +
+                        "   text-background-mode: rounded-box;" +
+                        "   text-background-color: white;" +
+                        "   text-padding: 3px;" +
+                        "   text-offset: 5px, 0px;" +
+                        "}" +
+                        "edge.highlighted {" +
+                        "   fill-color: red;" +
+                        "   size: 3px;" +
+                        "}";
+
         streamGraph.setAttribute("ui.stylesheet", stylesheet);
         streamGraph.setAttribute("ui.quality");
         streamGraph.setAttribute("ui.antialias");
-
 
         // Highlight the shortest path
         String shortestPath = calcShortestPath(word1, word2);
@@ -381,8 +472,20 @@ public class CustomGraph {
     public static void main(String[] args) {
         CustomGraph customGraph = new CustomGraph();
         Path currentDir = Paths.get(System.getProperty("user.dir"));
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         String file = "lab1/Text/2.txt";
 
+=======
+        String file = "Lab1/Text/2.txt"; // Update this path according to your file location
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+        String file = "Lab1/Text/2.txt"; // Update this path according to your file location
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+        String file = "Lab1/Text/2.txt"; // Update this path according to your file location
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
         String filePath = currentDir.resolve(file).toString();
         String[] words = readFile(filePath);
 
@@ -401,6 +504,9 @@ public class CustomGraph {
             }
         }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("请选择一个操作：");
@@ -448,5 +554,24 @@ public class CustomGraph {
                     System.out.println("无效选择，请重新选择。");
             }
         }
+=======
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+        customGraph.printGraph();
+        // customGraph.showDirectedGraph();
+        System.out.println(customGraph.queryBridgeWords("to", "out"));
+        System.out.println(customGraph.generateNewText("Seek to explore new and exciting synergies"));
+        System.out.println(customGraph.calcShortestPath("to", "and"));
+        customGraph.showDirectedGraph("to", "and");
+        // customGraph.randomWalk();
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
+=======
+>>>>>>> parent of 4053c24 (Merge branch 'master' into master)
     }
 }
