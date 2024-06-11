@@ -353,6 +353,13 @@ public class CustomGraph {
         streamGraph.display();
     }
 
+    //javadoc
+    /**
+     * Reads the content of a file and returns an array of words.
+     *
+     * @param filePath The path to the file to read.
+     * @return An array of words in the file.
+     **/
     public static String[] readFile(String filePath) {
         StringBuilder content = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
