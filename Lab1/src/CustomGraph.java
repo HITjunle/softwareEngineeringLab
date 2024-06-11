@@ -353,7 +353,7 @@ public class CustomGraph {
         streamGraph.display();
     }
 
-    private static String[] readFile(String filePath) {
+    public static String[] readFile(String filePath) {
         StringBuilder content = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;

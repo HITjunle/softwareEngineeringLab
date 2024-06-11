@@ -10,6 +10,15 @@
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
+        <ConfigurationLocation id="300de1d7-b651-4700-ad12-8ef2679c9265" type="LOCAL_FILE" scope="All" description="google_check">
+          $PROJECT_DIR$/../google_check.xml
+          <option name="properties">
+            <map>
+              <entry key="org.checkstyle.google.suppressionfilter.config" value="" />
+              <entry key="org.checkstyle.google.suppressionxpathfilter.config" value="" />
+            </map>
+          </option>
+        </ConfigurationLocation>
       </list>
     </option>
   </component>
